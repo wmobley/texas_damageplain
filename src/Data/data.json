@@ -1,0 +1,35 @@
+[
+  {
+    "url": "http://13.90.155.245:8080/geoserver/Flooding/wms",
+    "layer": "Flooding:damagePlain Oversampled",
+    "title": "Damage Plain Layer",
+    "tiled": true,
+    "query_column": "Probability",
+    "legend": [
+      {
+        "value-min": 0.002,
+        "value-max": 0.004,
+        "label": "500-Year",
+        "color": "#FFE945"
+      },
+      {
+        "value-min": 0.004,
+        "value-max": 0.01,
+        "label": "250-Year",
+        "color": "#BBAD6F"
+      },
+      {
+        "value-min": 0.01,
+        "value-max": 0.02,
+        "label": "100-Year",
+        "color": "#273F6C"
+      },
+      {
+        "value-min": 0.02,
+        "value-max": 1,
+        "label": "50-Year",
+        "color": "#00204C"
+      }
+    ]
+  }
+]
