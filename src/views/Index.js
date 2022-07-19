@@ -1,10 +1,9 @@
-import {Box, Button, Form, FormField, Grid, Grommet, Heading, Markdown, Paragraph, ResponsiveContext} from 'grommet';
+import {Box, Button, Grid, Grommet, Heading, Markdown, Paragraph, ResponsiveContext} from 'grommet';
 import {Menu} from 'grommet-icons';
 import React, {Component} from "react";
 import NavBar from "../Components/Navbars/NavBar";
 import AppBar from "../Components/Navbars/AppBar";
-import axios from "axios";
-import CommunityRecommender, {CustomSuggestions} from "../Components/Dropdowns/CommunityRecommender";
+import CommunityRecommender from "../Components/Dropdowns/CommunityRecommender";
 
 
 

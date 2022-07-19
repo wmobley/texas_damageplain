@@ -65,7 +65,7 @@ export default class Losses extends PureComponent {
     }
 
     getAxisYDomain(from, to, ref, offset) {
-        for (var i = 0; i < this.props.data.length; i += 1) {
+        for (let i = 0; i < this.props.data.length; i += 1) {
 
             if ((this.props.data[i].Date_loss) === from) {
                 from = i
@@ -192,19 +192,11 @@ export default class Losses extends PureComponent {
                          labelFormatter={d => (monthNames[new Date(d).getMonth()]) + "-" + new Date(d).getFullYear()}
                          formatter={tick => {
                              return "$" + tick.toLocaleString() + "K";
-                         }}
-                />
-
-
-
+                         }}/>
                     <Brush dataKey='Date_loss' height={30} stroke="#500000"
                            domain={[this.state.left, this.state.right]}
                            onChange={this.handleUpdate}
-
-
-                           tickFormatter={d => (monthNames[new Date(d).getMonth()]) + "-" + new Date(d).getFullYear()}
-
-                    />
+                           tickFormatter={d => (monthNames[new Date(d).getMonth()]) + "-" + new Date(d).getFullYear()}/>
 
                 <Bar yAxisId={0} dataKey="Damage" fill="#500000" syncId="anyId"
                      animationDuration={300}/>

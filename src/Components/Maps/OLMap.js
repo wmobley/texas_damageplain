@@ -1,22 +1,13 @@
 import React from 'react';
-import {useContext, useEffect} from "react";
 import Map from "./OL/Map";
 import {Layers, TileLayer} from "./OL/Layers"
-import {Fill, Style} from "ol/style";
 import {osm} from "./OL/Source"
 import {fromLonLat} from 'ol/proj';
 import {Controls, FullScreenControl} from "./OL/Controls";
-import MVTLayer from "./OL/Layers/MVT";
-
-import NavBar from "../Navbars/NavBar";
-import {Box, CheckBox, Grommet, Heading} from "grommet";
-import L from "leaflet";
 import OLwmts from "./OL/Layers/OLwmts";
-import MapContext from "./OL/Map/MapContext";
 import Legend from "./Legend";
-
-
-
+import MVTLayer from "./OL/Layers/MVT";
+import {Box} from "grommet";
 
 
 class OlMap extends React.Component {
@@ -42,8 +33,6 @@ class OlMap extends React.Component {
     }
 
     componentDidMount() {
-
-
     }
 
     setRefreshMap() {
@@ -61,39 +50,36 @@ class OlMap extends React.Component {
 
     }
 
-    setShowLayer2(Changed) {
+    setShowLayer2() {
         this.setState({showLayer2: !this.state.showLayer2})
     }
 
-    setShowLayer1(Changed) {
+    setShowLayer1() {
         this.setState({showLayer1: !this.state.showLayer1})
     }
 
     render() {
 
+
         return (
-            <div id={"OLMAP"}
+            <Box as={"OlMap"}
                  style={{
                      // height: this.props.height,
                      width: this.props.width
                  }}>
 
-                <Map    parentProps={this.props.parentState}  center={fromLonLat(this.state.center)} zoom={this.state.zoom}
-                >
+                <Map parentProps={this.props.parentState}  center={fromLonLat(this.state.center)} zoom={this.state.zoom}>
                     <Layers>
                         <TileLayer
-                            source={osm()
-
-                            }
-
-                            zIndex={0}
-                        />
-
+                            source={osm()}
+                            zIndex={0}/>
                             <OLwmts
                                 layer={this.props.layer}
-
-                                zIndex={1}
-                            />
+                                zIndex={1}/>
+                        {/*<MVTLayer*/}
+                        {/*    source={"https://tdis-geoserver.eastus.cloudapp.azure.com//geoserver/gwc/service/tms/1.0.0/" + "Flooding:Huc-8" +*/}
+                        {/*        '@EPSG%3A'+4326+'@pbf/{z}/{x}/{-y}.pbf'}*/}
+                        {/*    zIndex={2}/>*/}
 
                     </Layers>
                     <Controls>
@@ -101,10 +87,10 @@ class OlMap extends React.Component {
 
                     </Controls>
                 </Map>
-                <div class={"legend"}>
-                    <Legend parentState ={this.props}></Legend>
-                </div>
-            </div>
+                <Box elevation={"medium"} basis={"medium"} className={"legend"}>
+                    <Legend parentState={this.props}></Legend>
+                </Box>
+            </Box>
         );
     }
 

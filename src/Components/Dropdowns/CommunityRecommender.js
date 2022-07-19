@@ -1,9 +1,7 @@
-import React, {createRef, useCallback, useEffect, useRef, useState} from 'react';
+import React, {createRef} from 'react';
 
 import { Search } from 'grommet-icons';
-import {Box, Button, Form, Grommet, Image, Text, TextInput} from 'grommet';
-import { grommet, ThemeType } from 'grommet/themes';
-import { deepMerge } from 'grommet/utils';
+import {Box, Button, Form, Text, TextInput} from 'grommet';
 import axios from "axios";
 
 // Type annotations can only be used in TypeScript files.

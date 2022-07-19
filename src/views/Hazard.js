@@ -1,31 +1,21 @@
-import {Box,Tab, Tabs, Button, Grommet, Heading, Main,Text, ResponsiveContext} from 'grommet';
-import {Analytics,Menu, Map, MapLocation} from 'grommet-icons';
+import {Box, Button, Grommet, Heading, List, Main, ResponsiveContext, Tab, Tabs, Text} from 'grommet';
+
+import {Apps, Close, Download, MapLocation} from 'grommet-icons';
 import React, {Component} from "react";
 import AppBar from "../Components/Navbars/AppBar";
 import NavBar from "../Components/Navbars/NavBar";
 import Layers from "../Data/data.json"
 import OlMap from "../Components/Maps/OLMap";
-
-const myObj = [{
-        url: "http://13.90.155.245:8080/geoserver/tifs/wms",
-        layer: 'Flooding:damagePlain Oversampled',
-        title: "Damage Plain Layer",
-        tiled: true,
-        legend: [
-            {value: "500-Year", color: "#FFE945"},
-            {value: "250-Year", color: "#BBAD6F"},
-            {value: "100-Year", color: "#273F6C"},
-            {value: "50-Year", color: "#00204C"}
-        ]
-    },]
-;
-const myJSON = JSON.stringify(myObj);
+import BoundryDropdown from "../Components/Dropdowns/boundryDropdown";
 
 
-var obj = JSON.parse(myJSON);
+// const myJSON = JSON.stringify(myObj);
+
+
+// var obj = JSON.parse(myJSON);
 
 function parseQueryStringToDictionary(queryString) {
-    var dictionary = {};
+    const dictionary = {};
 
     // remove the '?' from the beginning of the
     // if it exists
@@ -37,16 +27,16 @@ function parseQueryStringToDictionary(queryString) {
     }
 
     // Step 1: separate out each key/value pair
-    var parts = queryString.split('&');
+    const parts = queryString.split('&');
 
-    for (var i = 0; i < parts.length; i++) {
-        var p = parts[i];
+    for (let i = 0; i < parts.length; i++) {
+        const p = parts[i];
         // Step 2: Split Key/Value pair
-        var keyValuePair = p.split('=');
+        const keyValuePair = p.split('=');
 
         // Step 3: Add Key/Value pair to Dictionary object
-        var key = keyValuePair[0];
-        var value = keyValuePair[1];
+        const key = keyValuePair[0];
+        let value = keyValuePair[1];
 
         // decode URI encoded string
         value = decodeURIComponent(value);
@@ -67,19 +57,20 @@ class Hazard extends Component {
 
         super(props);
 
-        let z = 10;
+        let z = 4;
         this.query = parseQueryStringToDictionary(this.props.location.search)
         if (this.query.exists) {
             console.log("exists")
             this.query.centroid = this.query.centroid.split(",")
 
         } else {
-            this.query.centroid = [-95.5000, 30.0000]
-            z = 9;
+            this.query.centroid = [-97.7410, 30.2748]
+            z = 6;
         }
 
-
+        this.removeFromList = this.removeFromList.bind(this)
         this.setSideBarState = this.setSideBarState.bind(this)
+        this.download = this.download.bind(this)
         this.state = {
             showSidebar: false,
             showMapNavigation: false,
@@ -91,7 +82,16 @@ class Hazard extends Component {
             damageMapUrl: "",
             layers: Layers,
             index: 0,
-            zoom: z
+            zoom: z,
+            file_name: [{
+
+                name: 12060202,
+                url: "https://tdiscorral.blob.core.windows.net/damageplain/outputFloodProb/huc12060202/huc120602020705.tif"
+            }, {
+
+                name: 12060201,
+                url: "https://tdiscorral.blob.core.windows.net/damageplain/outputFloodProb/huc12060201/huc120602010705.tif"
+            }],
         };
 
 
@@ -141,26 +141,26 @@ class Hazard extends Component {
                 },
             },
 
-                tab: {
+            tab: {
+                active: {
+                    background: 'snow',
+                    color: 'rain',
+                },
+                background: 'snow',
+
+                color: 'sage',
+
+                border: {
+                    side: 'bottom',
+                    color: 'sage',
                     active: {
-                        background: 'snow',
                         color: 'rain',
                     },
-                    background: 'snow',
-
-                    color: 'sage',
-
-                    border: {
-                        side: 'bottom',
-                        color: 'sage',
-                        active: {
-                            color: 'rain',
-                        },
-                        hover: {
-                            color: 'control',
-                        },
+                    hover: {
+                        color: 'control',
                     },
-                }
+                },
+            }
 
         };
     };
@@ -188,65 +188,125 @@ class Hazard extends Component {
     componentDidMount() {
     }
 
+    download() {
+
+        for (const boundary of this.state.file_name) {
+            console.log(boundary.url)
+        }
+    }
+
+    removeFromList(name) {
+
+        let newFileName = []
+        for (const datum of this.state.file_name) {
+            if (datum.name !== name.name) {
+                newFileName.push(datum)
+            }
+        }
+        this.setState(() => ({
+                file_name: newFileName
+            })
+        )
+
+    }
 
     render() {
 
 
         return (
-            <Grommet theme={this.theme} full={true}>
+            <Grommet elevation={"medium"} margin={"small"} theme={this.theme} full={true}>
                 <ResponsiveContext.Consumer>
                     {size => (
-                        <Box fill={true}>
+                        <Box elevation={"medium"} margin={"xxsmall"} fill={true}>
                             <Box background={"ice"}>
-                                <AppBar background={"whoop"}>
+                                <AppBar margin={"small"} background={"whoop"}>
                                     <Button
-                                        icon={<Menu/>}
+                                        icon={<Apps/>}
                                         onClick={() => this.setSideBarState()
-                                        }
-                                    />
-                                    <Heading level='3' margin='none'>TDIS</Heading>
+                                        }/>
+                                    <Heading level='3' margin='small'>Damage Plain </Heading>
 
                                 </AppBar>
                             </Box>
-                            <Main flex direction="row-responsive">
-
+                            <Main border={{color: "whoop", size:"large"}} elevation={"medium"} margin={"small"} flex direction="row-responsive">
                                 <NavBar showSidebar={this.state.showSidebar}
                                         action={this.setSideBarState}
                                         size={size}
                                         width={"medium"}
-                                >
+                                theme={this.theme}>
                                     <Tabs margin={"xsmall"} flex={"shrink"}>
-                                        <Tab title="Risk" >
-                                            <Box fill pad="medium" align="center" >
-                                                <MapLocation size="xlarge" color={'onyx'} />
+                                        <Tab title="About">
+                                            <Box fill pad="medium" align="center">
+                                                <MapLocation size="xlarge" color={'onyx'}/>
 
-                                                <Heading level={3} margin={"small"}>What's Your Risk?</Heading>
-                                                <Heading level={4} margin={"none"} color={"slate"}> Estimating Community Flood Risk</Heading>
-                                                <Box size={"small"} >
-                                                <Text size={"small"}  >The creation of new visualizations and maps that better communicate the
-                                                    reality of flood risk is the starting point
-                                                    for improving community resilience. Having accurate information before, during,
-                                                    and after a natural disaster saves lives and protects critical infrastructure
-                                                    and property. Maps that link the natural and built environment to the locations
-                                                    of people, resources, vulnerabilities, and capabilities enable communities to
-                                                    prepare, respond, and recover more effectively from adverse events.
+                                                <Heading level={3} margin={"small"}>The Damage Plain</Heading>
+                                                <Box gap={"small"} size={"small"}>
+                                                    <Heading level={4} margin={"none"} color={"slate"}> About: Estimating
+                                                    Community Flood Risk</Heading>
 
-                                                </Text>
+                                                    <Text size={"small"}>
+                                                        From catastrophic hurricanes to impassable roads, flooding
+                                                        causes major issues across Texas. Typically,
+                                                        coastal regions garner the most attention, but even drier
+                                                        regions regularly flood. Producing a traditional flood model is
+                                                        expensive, both in time and money, but machine learning reduces
+                                                        these barriers while providing a rapid and accurate assessment
+                                                        of flood risk.
+                                                    </Text>
+                                                    <Text size={"small"}>
+                                                        The Damage Plain model is a machine learning product that
+                                                        predicts the probability of flood
+                                                        loss across the state. The model uses a binary classification
+                                                        random forest to
+                                                        distinguish between confirmed flooded locations and
+                                                        structures. The random forest uses nine topographic, proximity,
+                                                        and hydrologic landscape features to predict flooded and
+                                                        non-flooded locations.
+                                                    </Text>
+                                                    <Text size={"small"}>
+                                                        This website provides a visual representation of the Damage
+                                                        Plain, and a way to download the dataset for any given watershed
+                                                        in the state.
+                                                    </Text>
                                                 </Box>
                                             </Box>
                                         </Tab>
-                                        <Tab title="Themes" >
-                                            <Box fill pad="large" align="center" background="snow">
-                                                <Map size="xlarge" color={'onyx'}/>
-                                                <h3>Map Themes</h3>
+                                        <Tab title="Download">
+
+                                            <Box fill pad="medium" gap={"medium"} align="center">
+                                                <Download size="xlarge" color={'onyx'}/>
+                                                <Heading level={3} margin={"small"}>Download</Heading>
+                                                <Text size={"small"} margin={"small"}>
+                                                    Select the Boundary type from which you want to download the file.
+                                                </Text>
+
+                                                <BoundryDropdown/>
+
+                                                <Text size={"small"} margin={"small"}> Click on the location you want to
+                                                    download. </Text>
+                                                <Box size={'medium'} margin={"small"} pad={"small"}>
+                                                    <List size={'medium'} margin={"small"} pad={"small"}
+                                                          data={this.state.file_name}
+                                                    >
+                                                        {(datum) =>
+                                                            <Box direction="row-responsive" align="center">
+
+                                                                <Text> {datum.name}</Text>
+                                                                <Close align={'right'}
+                                                                       onClick={() => this.removeFromList(datum)}></Close>
+                                                            </Box>
+                                                        }
+                                                    </List>
+                                                </Box>
+                                                <Box fill pad="medium" align="center">
+                                                    <Button primary color='sage' margin={"small"} label={"Download"}
+                                                            onClick={this.download}
+                                                    />
+                                                </Box>
+
                                             </Box>
                                         </Tab>
-                                        <Tab title="Portfolio" >
-                                            <Box fill pad="large" align="center" background="snow">
-                                                <Analytics size="xlarge" color={'onyx'}/>
-                                                <h3>Community Risk Portfolio</h3>
-                                            </Box>
-                                        </Tab>
+
                                     </Tabs>
 
                                 </NavBar>
@@ -254,20 +314,13 @@ class Hazard extends Component {
 
                                 <Main align={"center"} justify={"center"}>
                                     <Box direction="row-responsive"
-                                         height={"98%"}
-                                         fill={"horizontal"}
-                                    >
-
-
-                                        <OlMap LatLng={this.query.centroid
-                                        }
-                                               parentState ={this.state}
-
+                                         height={"100%"}
+                                         fill={"horizontal"}>
+                                        <OlMap LatLng={this.query.centroid}
+                                               parentState={this.state}
                                                layer={this.state.layers[this.state.index]}
                                                height="100%"
-                                               width="inherit"
-
-                                        >
+                                               width="inherit">
 
                                         </OlMap>
                                     </Box>

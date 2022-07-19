@@ -23,8 +23,8 @@ const Map = ({parentProps, children, zoom, center}) => {
         let mapObject = new ol.Map(options);
         mapObject.setTarget(mapRef.current);
         setMap(mapObject);
-        var status = document.getElementById('status');
-        var selected = null;
+        // var status = document.getElementById('status');
+        let selected = null;
 
 
         mapObject.on('click', function (e) {
@@ -39,7 +39,7 @@ const Map = ({parentProps, children, zoom, center}) => {
 
             let layer = mapObject.getLayers().getArray()
 
-            var viewResolution = /** @type {number} */ (mapObject.values_.view.getResolution());
+            // var viewResolution = /** @type {number} */ (mapObject.values_.view.getResolution());
             const pixel_url = layer[1].values_.source.getFeatureInfoUrl(e.coordinate,
                 10,
                 'EPSG:3857',
@@ -49,10 +49,10 @@ const Map = ({parentProps, children, zoom, center}) => {
             axios.get(pixel_url).then(response => {
 
                 let layer = parentProps.layers[parentProps.index]
-                var returnValue = response.data.features[0].properties[layer.query_column]
+                const returnValue = response.data.features[0].properties[layer.query_column];
                 let legend = document.getElementById("Legend").children;
-                for (var i = 0; i < legend.length; i++) {
-                    if (returnValue>=layer.legend[i]['value-min']& returnValue<layer.legend[i]['value-max']){
+                for (let i = 0; i < legend.length; i++) {
+                    if (returnValue>=layer.legend[i]['value-min'] && returnValue<layer.legend[i]['value-max']){
                         legend[i].classList.replace("LegendDecrease","LegendIncrease")
                         legend[i].innerHTML = layer.legend[i]['label']
                         legend[i].style.zIndex = 20

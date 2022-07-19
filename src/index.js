@@ -2,10 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import {BrowserRouter, Redirect, Route, Switch,} from "react-router-dom";
-import Index from "./views/Index"
 import Hazard from "./views/Hazard";
-import Current from "./views/Current";
-import Data from "./views/Data";
 // import "@fortawesome/fontawesome-free/css/all.min.css";
 import reportWebVitals from './reportWebVitals';
 

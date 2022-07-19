@@ -1,9 +1,8 @@
-import L from "leaflet";
-import {MapControl, withLeaflet} from "react-leaflet";
+// noinspection HtmlUnknownTarget
+
 import "./esri-leaflet-geocoder.css";
 import {Box, Footer} from "grommet";
 import React, {Component} from "react";
-import Layers from "../../Data/data.json";
 
 class Legend extends Component {
     constructor(props) {
@@ -21,8 +20,8 @@ class Legend extends Component {
     componentDidMount() {
         // get color depending on population density value
         let legend = document.getElementById("Legend").children;
-        for (var i = 0; i < legend.length; i++) {
-            if (i==this.props.parentState.IncreaseElement){
+        for (let i = 0; i < legend.length; i++) {
+            if (i===this.props.parentState.IncreaseElement){
                 legend[i].classList.add("LegendIncrease")
             }
             else{
@@ -44,7 +43,7 @@ class Legend extends Component {
         }
         return (
 
-        <Footer background="whoop" >
+        <Footer margin={'medium'} background="whoop" >
             <Box  direction="row" >
                 <Box id={"status"}></Box>
                 <Box fill={"vertical"} pad={"xsmall"} width={"medium"} />

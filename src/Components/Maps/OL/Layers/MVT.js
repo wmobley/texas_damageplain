@@ -4,6 +4,7 @@ import 'ol/ol.css';
 import MVT from 'ol/format/MVT.js';
 import VectorTileLayer from 'ol/layer/VectorTile.js';
 import VectorTileSource from 'ol/source/VectorTile.js';
+import * as tilegrid from "ol/tilegrid";
 
 
 
@@ -16,9 +17,9 @@ const MVTLayer = ({ source, style, zIndex = 0 , update}) => {
 	useEffect(()=>{
 
 		if (update){
-			let l=map.getLayers().getArray()[1];
-			l.values_.source.setUrl(source)
-			console.log("style", l.getStyle())
+			// let l=map.getLayers().getArray()[1];
+			// l.values_.source.setUrl(source)
+			// console.log("style", l.getStyle())
 				}
 	})
 	useEffect(() => {
@@ -27,9 +28,11 @@ const MVTLayer = ({ source, style, zIndex = 0 , update}) => {
 				declutter: false,
 				source: new VectorTileSource({
 					format: new MVT(),
+					tilePixelRatio: 1, // oversampling when > 1
+					tileGrid: tilegrid.createXYZ({maxZoom: 19}),
 					tileSize: 512,
 					url:source,
-					defaultDataProjection: 'EPSG:3857'
+					defaultDataProjection: 'EPSG:4326'
 				}),
 				style: style
 			});
