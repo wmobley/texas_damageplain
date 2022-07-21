@@ -8,9 +8,7 @@ class Legend extends Component {
     constructor(props) {
       super(props)
     this.state={
-
-    }
-
+        }
     }
 
     componentWillUnmount() {
@@ -27,36 +25,25 @@ class Legend extends Component {
             else{
                 legend[i].classList.add("LegendDecrease")
             }
-
         }
-
     }
 
     render(){
         const items = []
-
         for (const [index, value] of this.props.parentState.layer.legend.entries()) {
             items.push(
-
                 <Box align={"center"} key={index} fill={"vertical"} pad={"small"} width={"small"}  background={{"color": value.color}}/>
-            )
-        }
+            )}
         return (
-
         <Footer margin={'medium'} background="whoop" >
             <Box  direction="row" >
                 <Box id={"status"}></Box>
                 <Box fill={"vertical"} pad={"xsmall"} width={"medium"} />
-
                 <Box id="Legend" direction="row" >
                     {items}
                 </Box>
-
             </Box>
-            {/*<FooterContent />*/}
-
         </Footer>
-        )
-    }
+        )}
 }
 export default Legend;

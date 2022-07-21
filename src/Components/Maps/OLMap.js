@@ -27,6 +27,7 @@ class OlMap extends React.Component {
             showLayer1: true,
             showLayer2: true,
             refreshMap: false,
+
         }
 
 
@@ -76,10 +77,18 @@ class OlMap extends React.Component {
                             <OLwmts
                                 layer={this.props.layer}
                                 zIndex={1}/>
-                        {/*<MVTLayer*/}
-                        {/*    source={"https://tdis-geoserver.eastus.cloudapp.azure.com//geoserver/gwc/service/tms/1.0.0/" + "Flooding:Huc-8" +*/}
-                        {/*        '@EPSG%3A'+4326+'@pbf/{z}/{x}/{-y}.pbf'}*/}
-                        {/*    zIndex={2}/>*/}
+                        {(this.props.huc8_boundary) &&
+                            (<MVTLayer
+                            source={"https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/gwc/service/tms/1.0.0/Flooding:Huc-8" +
+                                '@EPSG%3A'+900913+'@pbf/{z}/{x}/{-y}.pbf'}
+                            zIndex={2}/>)
+                        }
+                        {(this.props.huc12_boundary) &&
+                            (<MVTLayer
+                                source={"https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/gwc/service/tms/1.0.0/Flooding:Huc-12" +
+                                    '@EPSG%3A'+900913+'@pbf/{z}/{x}/{-y}.pbf'}
+                                zIndex={2}/>)
+                        }
 
                     </Layers>
                     <Controls>

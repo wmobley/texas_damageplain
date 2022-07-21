@@ -6,16 +6,13 @@ import React, {Component} from "react";
 class NavBar extends Component {
     constructor(props) {
         super(props);
-
+        this.colors = this.props.theme.global.colors
     }
-
 
     render() {
         return (
             <Box  direction="row-responsive" >
-
                 {(!this.props.showSidebar || this.props.size !== 'small') ? (
-
                     <Collapsible direction="horizontal" open={this.props.showSidebar}>
                         {/*<Box flex fill>*/}
                         <Box
@@ -24,22 +21,18 @@ class NavBar extends Component {
                             width={this.props.width}
 
                             border={true}
-                            background="snow"
+                            background={this.colors.snow}
                             pad="small"
-                            elevation="small"
-                        >
+                            elevation="small">
                             <Text size="xlarge">
                                 {this.props.children}
                             </Text>
                         </Box>
-                        {/*</Box>*/}
                     </Collapsible>
-
                 ) : (
                     <Layer>
-
                         <Box
-                            background='snow'
+                            background={this.colors.snow}
                             tag='header'
                             width={this.props.width}
                             height={"large"}
@@ -48,8 +41,7 @@ class NavBar extends Component {
                             align='center'
                             direction='row'
                             id="hazard"
-                            overflow="scroll"
-                        >
+                            overflow="scroll">
                             <Button
                                 icon={<FormClose/>}
                                 onClick={() => this.props.action()}
@@ -57,15 +49,13 @@ class NavBar extends Component {
                         </Box>
                         <Box
                             fill
-                            background='light-2'
+                            background={this.colors.snow}
                             align='center'
-                            justify='center'
-                        >
+                            justify='center'>
                             sidebar
                         </Box>
                     </Layer>
                 )}
-
             </Box>
         )
     }

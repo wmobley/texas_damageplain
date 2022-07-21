@@ -10,8 +10,6 @@ import BoundryDropdown from "../Components/Dropdowns/boundryDropdown";
 
 
 // const myJSON = JSON.stringify(myObj);
-
-
 // var obj = JSON.parse(myJSON);
 
 function parseQueryStringToDictionary(queryString) {
@@ -21,7 +19,6 @@ function parseQueryStringToDictionary(queryString) {
     // if it exists
     if (queryString.indexOf('?') === 0) {
         queryString = queryString.substr(1);
-
     } else {
         return {exists: false}
     }
@@ -41,7 +38,6 @@ function parseQueryStringToDictionary(queryString) {
         // decode URI encoded string
         value = decodeURIComponent(value);
         value = value.replace(/\+/g, ' ');
-
         dictionary[key] = value;
     }
     dictionary.exists = true
@@ -51,23 +47,18 @@ function parseQueryStringToDictionary(queryString) {
 
 
 class Hazard extends Component {
-
-
     constructor(props) {
-
         super(props);
-
         let z = 4;
         this.query = parseQueryStringToDictionary(this.props.location.search)
         if (this.query.exists) {
             console.log("exists")
             this.query.centroid = this.query.centroid.split(",")
-
         } else {
             this.query.centroid = [-97.7410, 30.2748]
             z = 6;
         }
-
+        this.changeBoundary  = this.changeBoundary.bind(this)
         this.removeFromList = this.removeFromList.bind(this)
         this.setSideBarState = this.setSideBarState.bind(this)
         this.download = this.download.bind(this)
@@ -84,18 +75,15 @@ class Hazard extends Component {
             index: 0,
             zoom: z,
             file_name: [{
-
                 name: 12060202,
                 url: "https://tdiscorral.blob.core.windows.net/damageplain/outputFloodProb/huc12060202/huc120602020705.tif"
             }, {
-
                 name: 12060201,
                 url: "https://tdiscorral.blob.core.windows.net/damageplain/outputFloodProb/huc12060201/huc120602010705.tif"
             }],
+            huc8_boundary:false,
+            huc12_boundary:false,
         };
-
-
-        console.log(this.state.layers)
 
         //References
         this.map = React.createRef();
@@ -117,7 +105,6 @@ class Hazard extends Component {
         this.height = this.props.height;
         this.LatLng = [30.3000, -95.5000]
 
-
         //UI Props
         this.theme = {
             global: {
@@ -132,7 +119,6 @@ class Hazard extends Component {
                     ice: "#F0F3F4",
                     fossil: "#C8d1d3",
                     sand: "#b9b0A2"
-
                 },
                 font: {
                     family: 'Open Sans',
@@ -140,16 +126,13 @@ class Hazard extends Component {
                     height: '20px',
                 },
             },
-
             tab: {
                 active: {
                     background: 'snow',
                     color: 'rain',
                 },
                 background: 'snow',
-
                 color: 'sage',
-
                 border: {
                     side: 'bottom',
                     color: 'sage',
@@ -161,12 +144,29 @@ class Hazard extends Component {
                     },
                 },
             }
-
         };
     };
 
-    getZipcodes() {
-
+    changeBoundary(boundary){
+        console.log(boundary)
+        if (boundary==="Huc-8"){
+            this.setState(state=>({
+                huc8_boundary:true,
+                huc12_boundary:false,
+                })
+            )}
+        else if (boundary==="Huc-12"){
+            this.setState(state=>({
+                    huc8_boundary:false,
+                    huc12_boundary:true,
+                })
+            )}
+        else {
+            this.setState(state=>({
+                    huc8_boundary:false,
+                    huc12_boundary:false,
+                })
+            )}
     }
 
     setSideBarState() {
@@ -174,7 +174,6 @@ class Hazard extends Component {
                 showSidebar: !state.showSidebar
             })
         )
-
     };
 
     showMapNavigationState() {
@@ -182,21 +181,18 @@ class Hazard extends Component {
                 showMapNavigation: !state.showMapNavigation
             })
         )
-
     }
 
     componentDidMount() {
     }
 
     download() {
-
         for (const boundary of this.state.file_name) {
             console.log(boundary.url)
         }
     }
 
     removeFromList(name) {
-
         let newFileName = []
         for (const datum of this.state.file_name) {
             if (datum.name !== name.name) {
@@ -207,12 +203,9 @@ class Hazard extends Component {
                 file_name: newFileName
             })
         )
-
     }
 
     render() {
-
-
         return (
             <Grommet elevation={"medium"} margin={"small"} theme={this.theme} full={true}>
                 <ResponsiveContext.Consumer>
@@ -222,28 +215,26 @@ class Hazard extends Component {
                                 <AppBar margin={"small"} background={"whoop"}>
                                     <Button
                                         icon={<Apps/>}
-                                        onClick={() => this.setSideBarState()
-                                        }/>
-                                    <Heading level='3' margin='small'>Damage Plain </Heading>
-
+                                        onClick={() => this.setSideBarState()}/>
+                                    <Heading level='3' margin='small'>Damage Plain</Heading>
                                 </AppBar>
                             </Box>
-                            <Main border={{color: "whoop", size:"large"}} elevation={"medium"} margin={"small"} flex direction="row-responsive">
+
+                            <Main border={{color: "whoop", size:"large"}} elevation={"medium"} margin={"small"}
+                                  flex direction="row-responsive">
                                 <NavBar showSidebar={this.state.showSidebar}
                                         action={this.setSideBarState}
                                         size={size}
                                         width={"medium"}
-                                theme={this.theme}>
+                                        theme={this.theme}>
                                     <Tabs margin={"xsmall"} flex={"shrink"}>
                                         <Tab title="About">
                                             <Box fill pad="medium" align="center">
                                                 <MapLocation size="xlarge" color={'onyx'}/>
-
                                                 <Heading level={3} margin={"small"}>The Damage Plain</Heading>
                                                 <Box gap={"small"} size={"small"}>
                                                     <Heading level={4} margin={"none"} color={"slate"}> About: Estimating
                                                     Community Flood Risk</Heading>
-
                                                     <Text size={"small"}>
                                                         From catastrophic hurricanes to impassable roads, flooding
                                                         causes major issues across Texas. Typically,
@@ -271,44 +262,36 @@ class Hazard extends Component {
                                                 </Box>
                                             </Box>
                                         </Tab>
-                                        <Tab title="Download">
 
+                                        <Tab title="Download">
                                             <Box fill pad="medium" gap={"medium"} align="center">
                                                 <Download size="xlarge" color={'onyx'}/>
                                                 <Heading level={3} margin={"small"}>Download</Heading>
                                                 <Text size={"small"} margin={"small"}>
                                                     Select the Boundary type from which you want to download the file.
                                                 </Text>
-
-                                                <BoundryDropdown/>
-
+                                                <BoundryDropdown changeBoundary = {this.changeBoundary}/>
+                                                <Button  color={"whoop"} size ={'small'} label={'Clear'} onClick={this.changeBoundary}/>
                                                 <Text size={"small"} margin={"small"}> Click on the location you want to
                                                     download. </Text>
                                                 <Box size={'medium'} margin={"small"} pad={"small"}>
                                                     <List size={'medium'} margin={"small"} pad={"small"}
-                                                          data={this.state.file_name}
-                                                    >
+                                                          data={this.state.file_name}>
                                                         {(datum) =>
                                                             <Box direction="row-responsive" align="center">
-
                                                                 <Text> {datum.name}</Text>
                                                                 <Close align={'right'}
                                                                        onClick={() => this.removeFromList(datum)}></Close>
-                                                            </Box>
-                                                        }
+                                                            </Box> }
                                                     </List>
                                                 </Box>
                                                 <Box fill pad="medium" align="center">
                                                     <Button primary color='sage' margin={"small"} label={"Download"}
-                                                            onClick={this.download}
-                                                    />
+                                                            onClick={this.download}/>
                                                 </Box>
-
                                             </Box>
                                         </Tab>
-
                                     </Tabs>
-
                                 </NavBar>
 
 
@@ -320,18 +303,17 @@ class Hazard extends Component {
                                                parentState={this.state}
                                                layer={this.state.layers[this.state.index]}
                                                height="100%"
-                                               width="inherit">
+                                               width="inherit"
+                                                huc8_boundary={this.state.huc8_boundary}
+                                                huc12_boundary={this.state.huc12_boundary}>
 
                                         </OlMap>
                                     </Box>
-
                                 </Main>
                             </Main>
-
                         </Box>
                     )}
                 </ResponsiveContext.Consumer>
-
             </Grommet>
         )
     }
