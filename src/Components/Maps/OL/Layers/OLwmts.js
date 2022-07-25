@@ -33,7 +33,7 @@ const OLwmts = ({ layer, zIndex = 0 }) => {
 				map.removeLayer(tileLayer);
 			}
 		};
-	}, [map]);
+	}, [layer, zIndex, map]);
 
 	return null;
 };

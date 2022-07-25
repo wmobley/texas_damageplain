@@ -21,7 +21,7 @@ const TileLayer = ({ source, zIndex = 0 }) => {
 				map.removeLayer(tileLayer);
 			}
 		};
-	}, [map]);
+	}, [source, zIndex, map]);
 
 	return null;
 };

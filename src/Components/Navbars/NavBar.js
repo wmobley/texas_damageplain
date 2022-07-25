@@ -34,11 +34,11 @@ class NavBar extends Component {
                         <Box
                             background={this.colors.snow}
                             tag='header'
-                            width={this.props.width}
-                            height={"large"}
-                            border={true}
+                            width={"max"}
+                            // height={"small"}
+                            border={false}
                             justify='end'
-                            align='center'
+                            align='right'
                             direction='row'
                             id="hazard"
                             overflow="scroll">
@@ -52,7 +52,9 @@ class NavBar extends Component {
                             background={this.colors.snow}
                             align='center'
                             justify='center'>
-                            sidebar
+                            <Text size="xlarge">
+                                {this.props.children}
+                            </Text>
                         </Box>
                     </Layer>
                 )}

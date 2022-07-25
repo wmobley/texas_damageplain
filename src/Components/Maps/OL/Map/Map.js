@@ -68,7 +68,7 @@ const Map = ({parentProps, children, zoom, center}) => {
 
         });
         return () => mapObject.setTarget(undefined);
-    }, []);
+    }, [center, parentProps, zoom]);
 
 
     // zoom change handler
@@ -76,14 +76,14 @@ const Map = ({parentProps, children, zoom, center}) => {
         if (!map) return;
 
         map.getView().setZoom(zoom);
-    }, [zoom]);
+    }, [map, zoom]);
 
     // center change handler
     useEffect(() => {
         if (!map) return;
 
         map.getView().setCenter(center)
-    }, [center])
+    }, [center, map])
     if (map != null) {
 
         console.log("map", map.values_.view)

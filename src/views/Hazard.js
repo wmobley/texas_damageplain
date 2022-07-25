@@ -7,10 +7,10 @@ import NavBar from "../Components/Navbars/NavBar";
 import Layers from "../Data/data.json"
 import OlMap from "../Components/Maps/OLMap";
 import BoundryDropdown from "../Components/Dropdowns/boundryDropdown";
+import { saveAs } from 'file-saver';
 
 
-// const myJSON = JSON.stringify(myObj);
-// var obj = JSON.parse(myJSON);
+
 
 function parseQueryStringToDictionary(queryString) {
     const dictionary = {};
@@ -62,6 +62,7 @@ class Hazard extends Component {
         this.removeFromList = this.removeFromList.bind(this)
         this.setSideBarState = this.setSideBarState.bind(this)
         this.download = this.download.bind(this)
+        this.addBoundary = this.addBoundary.bind(this)
         this.state = {
             showSidebar: false,
             showMapNavigation: false,
@@ -74,13 +75,9 @@ class Hazard extends Component {
             layers: Layers,
             index: 0,
             zoom: z,
-            file_name: [{
-                name: 12060202,
-                url: "https://tdiscorral.blob.core.windows.net/damageplain/outputFloodProb/huc12060202/huc120602020705.tif"
-            }, {
-                name: 12060201,
-                url: "https://tdiscorral.blob.core.windows.net/damageplain/outputFloodProb/huc12060201/huc120602010705.tif"
-            }],
+            file_name: [
+
+            ],
             huc8_boundary:false,
             huc12_boundary:false,
         };
@@ -146,7 +143,11 @@ class Hazard extends Component {
             }
         };
     };
-
+    addBoundary(name, url){
+        let file_name = this.state.file_name
+        file_name.push({name:name, url:url})
+        this.setState(file_name)
+    }
     changeBoundary(boundary){
         console.log(boundary)
         if (boundary==="Huc-8"){
@@ -167,9 +168,11 @@ class Hazard extends Component {
                     huc12_boundary:false,
                 })
             )}
+
     }
 
-    setSideBarState() {
+    setSideBarState(e) {
+        console.log(e)
         this.setState(state => ({
                 showSidebar: !state.showSidebar
             })
@@ -187,9 +190,16 @@ class Hazard extends Component {
     }
 
     download() {
-        for (const boundary of this.state.file_name) {
-            console.log(boundary.url)
-        }
+        this.state.file_name.forEach(function (e) {
+            fetch(e.url)
+                .then(res => res.blob())
+                .then(blob => {
+                    saveAs(blob, e.name);
+                });
+        });
+        // for (const boundary of this.state.file_name) {
+        //     setTimeout(() => { downloadURI(boundary.url, boundary.name+".tif");},500)
+        // }
     }
 
     removeFromList(name) {
@@ -274,21 +284,23 @@ class Hazard extends Component {
                                                 <Button  color={"whoop"} size ={'small'} label={'Clear'} onClick={this.changeBoundary}/>
                                                 <Text size={"small"} margin={"small"}> Click on the location you want to
                                                     download. </Text>
-                                                <Box size={'medium'} margin={"small"} pad={"small"}>
-                                                    <List size={'medium'} margin={"small"} pad={"small"}
+                                                <Box height={"small"} size={'medium'} overflow={"scroll"}  >
+                                                    <List  margin={"xxsmall"} pad={"xxsmall"}
                                                           data={this.state.file_name}>
                                                         {(datum) =>
-                                                            <Box direction="row-responsive" align="center">
+                                                            <Box direction="row-responsive" pad={"small"} align="center">
                                                                 <Text> {datum.name}</Text>
                                                                 <Close align={'right'}
                                                                        onClick={() => this.removeFromList(datum)}></Close>
                                                             </Box> }
                                                     </List>
+
                                                 </Box>
                                                 <Box fill pad="medium" align="center">
                                                     <Button primary color='sage' margin={"small"} label={"Download"}
                                                             onClick={this.download}/>
                                                 </Box>
+
                                             </Box>
                                         </Tab>
                                     </Tabs>
@@ -305,7 +317,8 @@ class Hazard extends Component {
                                                height="100%"
                                                width="inherit"
                                                 huc8_boundary={this.state.huc8_boundary}
-                                                huc12_boundary={this.state.huc12_boundary}>
+                                                huc12_boundary={this.state.huc12_boundary}
+                                                addBoundary ={this.addBoundary}>
 
                                         </OlMap>
                                     </Box>

@@ -81,13 +81,15 @@ class OlMap extends React.Component {
                             (<MVTLayer
                             source={"https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/gwc/service/tms/1.0.0/Flooding:Huc-8" +
                                 '@EPSG%3A'+900913+'@pbf/{z}/{x}/{-y}.pbf'}
-                            zIndex={2}/>)
+                            zIndex={2}
+                            addBoundary = {this.props.addBoundary}/>)
                         }
                         {(this.props.huc12_boundary) &&
                             (<MVTLayer
                                 source={"https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/gwc/service/tms/1.0.0/Flooding:Huc-12" +
                                     '@EPSG%3A'+900913+'@pbf/{z}/{x}/{-y}.pbf'}
-                                zIndex={2}/>)
+                                zIndex={2}
+                                addBoundary = {this.props.addBoundary}/>)
                         }
 
                     </Layers>

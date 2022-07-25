@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect} from "react";
 import MapContext from "../Map/MapContext";
 import 'ol/ol.css';
 import MVT from 'ol/format/MVT.js';
@@ -9,9 +9,9 @@ import * as tilegrid from "ol/tilegrid";
 
 
 
-const MVTLayer = ({ source, style, zIndex = 0 , update}) => {
+const MVTLayer = ({ source, style, zIndex = 0 , update, addBoundary}) => {
 	const { map } = useContext(MapContext);
-	const [refresh, setRefresh] = useState(false)
+	// const [refresh, setRefresh] = useState(false)
 
 
 	useEffect(()=>{
@@ -24,6 +24,7 @@ const MVTLayer = ({ source, style, zIndex = 0 , update}) => {
 	})
 	useEffect(() => {
 		if (!map) return;
+
 		let vectorLayer = new VectorTileLayer({
 				declutter: false,
 				source: new VectorTileSource({
@@ -32,7 +33,8 @@ const MVTLayer = ({ source, style, zIndex = 0 , update}) => {
 					tileGrid: tilegrid.createXYZ({maxZoom: 19}),
 					tileSize: 512,
 					url:source,
-					defaultDataProjection: 'EPSG:4326'
+					defaultDataProjection: 'EPSG:900913',
+					crossOrigin: 'anonymous'
 				}),
 				style: style
 			});
@@ -40,13 +42,31 @@ const MVTLayer = ({ source, style, zIndex = 0 , update}) => {
 
 		map.addLayer(vectorLayer);
 		vectorLayer.setZIndex(zIndex);
+		map.on(['click'], function (event) {
+			vectorLayer.getFeatures(event.pixel).then(function (features) {
+				if (!features.length) {
 
+
+
+					// selection = {};
+					// selectionLayer.changed();
+					return;
+				}
+				const feature = features[0];
+				if (!feature) {
+					return;
+				}
+				addBoundary(feature.properties_.name, feature.properties_.url)
+				console.log(feature.properties_.name)
+
+			})
+		})
 		return () => {
 			if (map) {
 				map.removeLayer(vectorLayer);
 			}
 		};
-	}, [map]);
+	}, [source,addBoundary, style, zIndex, map]);
 
 
 	return null;
