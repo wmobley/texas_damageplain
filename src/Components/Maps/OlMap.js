@@ -63,12 +63,7 @@ class OlMap extends React.Component {
 
 
         return (
-            <Box as={"OlMap"}
-                 style={{
-                     // height: this.props.height,
-                     width: this.props.width
-                 }}>
-
+            <Box fill={true}>
                 <Map parentProps={this.props.parentState}  center={fromLonLat(this.state.center)} zoom={this.state.zoom}>
                     <Layers>
                         <TileLayer
@@ -82,14 +77,18 @@ class OlMap extends React.Component {
                             source={"https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/gwc/service/tms/1.0.0/Flooding:Huc-8" +
                                 '@EPSG%3A'+900913+'@pbf/{z}/{x}/{-y}.pbf'}
                             zIndex={2}
-                            addBoundary = {this.props.addBoundary}/>)
+                            addBoundary = {this.props.addBoundary}
+                            style ={this.props.styles}
+                            selected_boundaries = {this.props.selected_boundaries}/>)
                         }
                         {(this.props.huc12_boundary) &&
                             (<MVTLayer
                                 source={"https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/gwc/service/tms/1.0.0/Flooding:Huc-12" +
                                     '@EPSG%3A'+900913+'@pbf/{z}/{x}/{-y}.pbf'}
                                 zIndex={2}
-                                addBoundary = {this.props.addBoundary}/>)
+                                addBoundary = {this.props.addBoundary}
+                                style ={this.props.styles}
+                                selected_boundaries = {this.props.selected_boundaries}/>)
                         }
 
                     </Layers>

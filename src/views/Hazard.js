@@ -5,7 +5,7 @@ import React, {Component} from "react";
 import AppBar from "../Components/Navbars/AppBar";
 import NavBar from "../Components/Navbars/NavBar";
 import Layers from "../Data/data.json"
-import OlMap from "../Components/Maps/OLMap";
+import OlMap from "../Components/Maps/OlMap";
 import BoundryDropdown from "../Components/Dropdowns/boundryDropdown";
 import { saveAs } from 'file-saver';
 
@@ -86,18 +86,18 @@ class Hazard extends Component {
         this.map = React.createRef();
 
         //Legend Props
-        this.grades = [0, 1, 2, 3];
+        // this.grades = [0, 1, 2, 3];
         this.colors = [
             "#00204C",
             "#273F6C",
             "#BBAD6F",
             "#FFE945",]
 
-        this.years = [
-            "10-Year",
-            "100-Year",
-            "250-Year",
-            '500-Year']
+        // this.years = [
+        //     "10-Year",
+        //     "100-Year",
+        //     "250-Year",
+        //     '500-Year']
         this.width = this.props.width;
         this.height = this.props.height;
         this.LatLng = [30.3000, -95.5000]
@@ -144,9 +144,33 @@ class Hazard extends Component {
         };
     };
     addBoundary(name, url){
-        let file_name = this.state.file_name
-        file_name.push({name:name, url:url})
-        this.setState(file_name)
+
+
+
+        let removed = this.removeFromList(name)
+        console.log(removed)
+        let prev_file_name = this.state.file_name
+        if (!removed) prev_file_name.push({name: name, url: url})
+
+        this.setState({file_name:prev_file_name})
+    }
+
+    removeFromList(name) {
+        console.log(name)
+        let newFileName = []
+        this.state.file_name.forEach(datum=> {
+
+            if (datum.name !== name) {
+                newFileName.push(datum)
+            }
+        });
+        console.log(newFileName, this.state.file_name)
+        let removed = newFileName.length < this.state.file_name.length
+        this.setState(() => ({
+                file_name: newFileName
+            })
+        )
+        return removed
     }
     changeBoundary(boundary){
         console.log(boundary)
@@ -177,6 +201,8 @@ class Hazard extends Component {
                 showSidebar: !state.showSidebar
             })
         )
+
+
     };
 
     showMapNavigationState() {
@@ -202,18 +228,7 @@ class Hazard extends Component {
         // }
     }
 
-    removeFromList(name) {
-        let newFileName = []
-        for (const datum of this.state.file_name) {
-            if (datum.name !== name.name) {
-                newFileName.push(datum)
-            }
-        }
-        this.setState(() => ({
-                file_name: newFileName
-            })
-        )
-    }
+
 
     render() {
         return (
@@ -291,7 +306,7 @@ class Hazard extends Component {
                                                             <Box direction="row-responsive" pad={"small"} align="center">
                                                                 <Text> {datum.name}</Text>
                                                                 <Close align={'right'}
-                                                                       onClick={() => this.removeFromList(datum)}></Close>
+                                                                       onClick={() => this.removeFromList(datum.name)}></Close>
                                                             </Box> }
                                                     </List>
 
@@ -308,17 +323,20 @@ class Hazard extends Component {
 
 
                                 <Main align={"center"} justify={"center"}>
-                                    <Box direction="row-responsive"
-                                         height={"100%"}
-                                         fill={"horizontal"}>
+                                    <Box direction={"row-responsive"}
+                                         // height={"100%"}
+                                         responsive={true}
+                                         fill={true}>
                                         <OlMap LatLng={this.query.centroid}
                                                parentState={this.state}
                                                layer={this.state.layers[this.state.index]}
-                                               height="100%"
-                                               width="inherit"
+                                               // height="100%"
+                                               // width="inherit"
                                                 huc8_boundary={this.state.huc8_boundary}
                                                 huc12_boundary={this.state.huc12_boundary}
-                                                addBoundary ={this.addBoundary}>
+                                                addBoundary ={this.addBoundary}
+                                               selected_boundaries = {this.state.file_name}
+                                        styles = {this.theme}>
 
                                         </OlMap>
                                     </Box>

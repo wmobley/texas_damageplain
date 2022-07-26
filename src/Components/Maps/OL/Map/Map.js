@@ -35,8 +35,6 @@ const Map = ({parentProps, children, zoom, center}) => {
 
                 selected = null;
             }
-
-
             let layer = mapObject.getLayers().getArray()
 
             // var viewResolution = /** @type {number} */ (mapObject.values_.view.getResolution());
@@ -45,7 +43,7 @@ const Map = ({parentProps, children, zoom, center}) => {
                 'EPSG:3857',
                 {'INFO_FORMAT': 'application/json',
                 'STYLES':''})
-            console.log(parentProps)
+
             axios.get(pixel_url).then(response => {
 
                 let layer = parentProps.layers[parentProps.index]
@@ -67,7 +65,9 @@ const Map = ({parentProps, children, zoom, center}) => {
             })
 
         });
+
         return () => mapObject.setTarget(undefined);
+
     }, [center, parentProps, zoom]);
 
 
@@ -85,8 +85,11 @@ const Map = ({parentProps, children, zoom, center}) => {
         map.getView().setCenter(center)
     }, [center, map])
     if (map != null) {
+        setTimeout(() => {
+            map.updateSize();
+        }, 300);
 
-        console.log("map", map.values_.view)
+
     }
 
     // get hover effect

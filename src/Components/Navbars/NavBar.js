@@ -10,10 +10,11 @@ class NavBar extends Component {
     }
 
     render() {
+
         return (
             <Box  direction="row-responsive" >
                 {(!this.props.showSidebar || this.props.size !== 'small') ? (
-                    <Collapsible direction="horizontal" open={this.props.showSidebar}>
+                    <Collapsible  direction="horizontal" open={this.props.showSidebar}>
                         {/*<Box flex fill>*/}
                         <Box
                             id="hazard" overflow="scroll"

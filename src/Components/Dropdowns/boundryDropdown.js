@@ -3,11 +3,12 @@ import { Select } from 'grommet';
 
 
 const OPTIONS = ['Huc-8', 'Huc-12']
-export default class extends Component {
+class BoundaryDropdown extends Component {
     constructor(props) {
         super(props)
+        this.state = { value: [], options: OPTIONS }
     }
-    state = { value: [], options: OPTIONS }
+
 
     render() {
         const { options, value } = this.state;
@@ -28,3 +29,4 @@ export default class extends Component {
         );
     }
 }
+export default BoundaryDropdown;

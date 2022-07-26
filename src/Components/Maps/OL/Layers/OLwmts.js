@@ -24,7 +24,6 @@ const OLwmts = ({ layer, zIndex = 0 }) => {
 		})
 
 
-		console.log(tileLayer)
 		map.addLayer(tileLayer);
 		tileLayer.setZIndex(zIndex);
 
