@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect} from "react";
 import MapContext from "../Map/MapContext";
 import 'ol/ol.css';
 import MVT from 'ol/format/MVT.js';
@@ -10,28 +10,16 @@ import {Fill, Stroke, Style} from "ol/style";
 
 
 
-const MVTLayer = ({ source,  zIndex = 0 ,style, update, addBoundary, selected_boundaries}) => {
+const MVTLayer = ({ source,  zIndex = 0 ,style, addBoundary, selected_boundaries}) => {
 	const { map } = useContext(MapContext);
-	// const [refresh, setRefresh] = useState(false)
-
-	const selection = []
-	selected_boundaries.forEach(boundary=>selection.push(boundary.name))
 
 
 
-
-	useEffect(()=>{
-
-		if (update){
-			// let l=map.getLayers().getArray()[1];
-			// l.values_.source.setUrl(source)
-			// console.log("style", l.getStyle())
-				}
-	})
 	useEffect(() => {
+
+		const selection = []
+		selected_boundaries.forEach(boundary=>selection.push(boundary.name))
 		if (!map) return;
-
-
 		const boundaryStyle = new Style({
 			stroke: new Stroke({
 				color: style.global.colors.slate,
@@ -44,7 +32,7 @@ const MVTLayer = ({ source,  zIndex = 0 ,style, update, addBoundary, selected_bo
 		});
 		const selectedBoundary = new Style({
 			stroke: new Stroke({
-				color: style.global.colors.whoop,//'rgba(200,20,20,0.8)',
+				color: style.global.colors.whoop,
 				width: 2,
 			}),
 			fill: new Fill({
@@ -71,7 +59,6 @@ const MVTLayer = ({ source,  zIndex = 0 ,style, update, addBoundary, selected_bo
 			source: vectorLayer.getSource(),
 
 			style: function (feature) {
-				// console.log(feature.properties_.name in selection)
 				if (selection.includes(feature.properties_.name)) {
 					return selectedBoundary;
 				}
@@ -82,7 +69,7 @@ const MVTLayer = ({ source,  zIndex = 0 ,style, update, addBoundary, selected_bo
 		map.on(['click'], function (event) {
 			vectorLayer.getFeatures(event.pixel).then(function (features) {
 				if (!features.length) {
-					// setSelection( []);
+
 					selectionLayer.changed();
 					return;
 				}
@@ -90,28 +77,8 @@ const MVTLayer = ({ source,  zIndex = 0 ,style, update, addBoundary, selected_bo
 				if (!feature) {
 					return;
 				}
-				const fid = feature.properties_.name;
 				addBoundary(feature.properties_.name, feature.properties_.url)
-				// setSelection((prevState)=>{
-				// 	if (prevState.includes(fid)){
-				// 		let index = prevState.indexOf(fid);
-				//
-				// 		if (index > -1) {
-				// 			prevState.splice(index, 1); // Remove array element
-				// 		}
-				// 		return prevState
-				// 	}else{
-				// 	prevState.push (fid)
-				// 	addBoundary(feature.properties_.name, feature.properties_.url)
-				// 	return prevState
-				// 	}
-				// });
-
 				selectionLayer.changed();
-
-
-				console.log(feature.properties_.name)
-
 			})
 		})
 		return () => {
@@ -119,7 +86,7 @@ const MVTLayer = ({ source,  zIndex = 0 ,style, update, addBoundary, selected_bo
 				map.removeLayer(vectorLayer);
 			}
 		};
-	}, [source,addBoundary,style,  zIndex, map]);
+	}, [source,addBoundary,style,  zIndex, map,selected_boundaries]);
 
 
 	return null;
