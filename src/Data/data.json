@@ -1,6 +1,6 @@
 [
   {
-    "url": "http://13.90.155.245:8080/geoserver/Flooding/wms",
+    "url": "https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/Flooding/wms",
     "layer": "Flooding:damagePlain Oversampled",
     "title": "Damage Plain Layer",
     "tiled": true,
