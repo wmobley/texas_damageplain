@@ -173,21 +173,21 @@ class Hazard extends Component {
         return removed
     }
     changeBoundary(boundary){
-        console.log(boundary)
+
         if (boundary==="Huc-8"){
-            this.setState(state=>({
+            this.setState(({
                 huc8_boundary:true,
                 huc12_boundary:false,
                 })
             )}
         else if (boundary==="Huc-12"){
-            this.setState(state=>({
+            this.setState(({
                     huc8_boundary:false,
                     huc12_boundary:true,
                 })
             )}
         else {
-            this.setState(state=>({
+            this.setState(({
                     huc8_boundary:false,
                     huc12_boundary:false,
                 })
@@ -220,7 +220,8 @@ class Hazard extends Component {
             fetch(e.url)
                 .then(res => res.blob())
                 .then(blob => {
-                    saveAs(blob, e.name);
+                    saveAs(blob, e.name+".tif");
+
                 });
         });
         // for (const boundary of this.state.file_name) {
