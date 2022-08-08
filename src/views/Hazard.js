@@ -346,7 +346,7 @@ class Hazard extends Component {
                                                changeMap={this.setMap}
 
                                                parentState={this.state}
-                                               layer={this.state.layers[this.state.index]}
+                                               layer={this.state.layers}
                                             // height="100%"
                                             // width="inherit"
                                                huc8_boundary={this.state.huc8_boundary}

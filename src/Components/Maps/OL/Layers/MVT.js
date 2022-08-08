@@ -44,7 +44,7 @@ const MVTLayer = ({ source,  zIndex = 0 ,style, addBoundary, selected_boundaries
 					tilePixelRatio: 1, // oversampling when > 1
 					tileGrid: tilegrid.createXYZ({maxZoom: 19}),
 					tileSize: 512,
-					url:source,
+					url: source.url,
 					defaultDataProjection: 'EPSG:900913',
 					crossOrigin: 'anonymous'
 				}),
