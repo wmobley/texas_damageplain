@@ -7,9 +7,8 @@ import NavBar from "../Components/Navbars/NavBar";
 import Layers from "../Data/data.json"
 import OlMap from "../Components/Maps/OlMap";
 import BoundryDropdown from "../Components/Dropdowns/boundryDropdown";
-import { saveAs } from 'file-saver';
-
-
+import {saveAs} from 'file-saver';
+import {fromLonLat} from "ol/proj";
 
 
 function parseQueryStringToDictionary(queryString) {
@@ -62,24 +61,19 @@ class Hazard extends Component {
         this.removeFromList = this.removeFromList.bind(this)
         this.setSideBarState = this.setSideBarState.bind(this)
         this.download = this.download.bind(this)
+        this.setMap = this.setMap.bind(this)
         this.addBoundary = this.addBoundary.bind(this)
         this.state = {
             showSidebar: false,
             showMapNavigation: false,
-            boundary: {
-                gid: "",
-                Flood_Hazard: "",
-                centroid: [-95.5000, 30.3000]
-            },
             damageMapUrl: "",
             layers: Layers,
             index: 0,
             zoom: z,
-            file_name: [
-
-            ],
-            huc8_boundary:false,
-            huc12_boundary:false,
+            center: fromLonLat(this.query.centroid),
+            file_name: [],
+            huc8_boundary: false,
+            huc12_boundary: false,
         };
 
         //References
@@ -143,16 +137,21 @@ class Hazard extends Component {
             }
         };
     };
-    addBoundary(name, url){
 
+    addBoundary(name, url, map_values) {
 
+        console.log(this.state.center)
 
         let removed = this.removeFromList(name)
-        console.log(removed)
+
         let prev_file_name = this.state.file_name
         if (!removed) prev_file_name.push({name: name, url: url})
 
-        this.setState({file_name:prev_file_name})
+        this.setState({
+            file_name: prev_file_name,
+            zoom: map_values.zoom,
+            center: map_values.center
+        })
     }
 
     removeFromList(name) {
@@ -180,23 +179,38 @@ class Hazard extends Component {
                 huc12_boundary:false,
                 })
             )}
-        else if (boundary==="Huc-12"){
+        else if (boundary === "Huc-12") {
             this.setState(({
-                    huc8_boundary:false,
-                    huc12_boundary:true,
+                    huc8_boundary: false,
+                    huc12_boundary: true,
                 })
-            )}
-        else {
+            )
+        } else {
             this.setState(({
-                    huc8_boundary:false,
-                    huc12_boundary:false,
+                    huc8_boundary: false,
+                    huc12_boundary: false,
                 })
-            )}
+            )
+        }
 
     }
 
-    setSideBarState(e) {
-        console.log(e)
+    setMap(map_values) {
+
+        if ((this.state.zoom !== map_values.zoom) ||
+            (this.state.center !== map_values.center)) {
+            console.log(map_values)
+            this.setState({
+                zoom: map_values.zoom,
+                center: map_values.center
+            })
+
+        }
+    }
+
+
+    setSideBarState() {
+
         this.setState(state => ({
                 showSidebar: !state.showSidebar
             })
@@ -325,19 +339,21 @@ class Hazard extends Component {
 
                                 <Main align={"center"} justify={"center"}>
                                     <Box direction={"row-responsive"}
-                                         // height={"100%"}
+                                        // height={"100%"}
                                          responsive={true}
                                          fill={true}>
-                                        <OlMap LatLng={this.query.centroid}
+                                        <OlMap LatLng={this.state.centroid}
+                                               changeMap={this.setMap}
+
                                                parentState={this.state}
                                                layer={this.state.layers[this.state.index]}
-                                               // height="100%"
-                                               // width="inherit"
-                                                huc8_boundary={this.state.huc8_boundary}
-                                                huc12_boundary={this.state.huc12_boundary}
-                                                addBoundary ={this.addBoundary}
-                                               selected_boundaries = {this.state.file_name}
-                                        styles = {this.theme}>
+                                            // height="100%"
+                                            // width="inherit"
+                                               huc8_boundary={this.state.huc8_boundary}
+                                               huc12_boundary={this.state.huc12_boundary}
+                                               addBoundary={this.addBoundary}
+                                               selected_boundaries={this.state.file_name}
+                                               styles={this.theme}>
 
                                         </OlMap>
                                     </Box>

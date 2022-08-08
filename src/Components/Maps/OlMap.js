@@ -2,7 +2,7 @@ import React from 'react';
 import Map from "./OL/Map";
 import {Layers, TileLayer} from "./OL/Layers"
 import {osm} from "./OL/Source"
-import {fromLonLat} from 'ol/proj';
+
 import {Controls, FullScreenControl} from "./OL/Controls";
 import OLwmts from "./OL/Layers/OLwmts";
 import Legend from "./Legend";
@@ -13,16 +13,15 @@ import {Box} from "grommet";
 class OlMap extends React.Component {
     constructor(props) {
         super(props);
-        this.setCenter = this.setCenter.bind(this)
-        this.setZoom = this.setZoom.bind(this)
+
         this.setShowLayer2 = this.setShowLayer2.bind(this)
         this.setShowLayer1 = this.setShowLayer1.bind(this)
         this.setRefreshMap = this.setRefreshMap.bind(this)
         this.mapRef = React.createRef()
-        this.mvtRef = React.createRef()
+
         this.state = {
 
-            center: this.props.LatLng,
+            center: this.props.parentState.center,
             zoom: this.props.parentState.zoom,
             showLayer1: true,
             showLayer2: true,
@@ -41,15 +40,7 @@ class OlMap extends React.Component {
     }
 
 
-    setCenter(Changed) {
 
-
-    }
-
-    setZoom(Zoom) {
-        this.setState({zoom: Zoom})
-
-    }
 
     setShowLayer2() {
         this.setState({showLayer2: !this.state.showLayer2})
@@ -64,22 +55,22 @@ class OlMap extends React.Component {
 
         return (
             <Box fill={true}>
-                <Map parentProps={this.props.parentState}  center={fromLonLat(this.state.center)} zoom={this.state.zoom}>
+                <Map parentProps={this.props.parentState} changeMap={this.props.changeMap}>
                     <Layers>
                         <TileLayer
                             source={osm()}
                             zIndex={0}/>
-                            <OLwmts
-                                layer={this.props.layer}
-                                zIndex={1}/>
+                        <OLwmts
+                            layer={this.props.layer}
+                            zIndex={1}/>
                         {(this.props.huc8_boundary) &&
                             (<MVTLayer
-                            source={"https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/gwc/service/tms/1.0.0/Flooding:Huc-8" +
-                                '@EPSG%3A'+900913+'@pbf/{z}/{x}/{-y}.pbf'}
-                            zIndex={2}
-                            addBoundary = {this.props.addBoundary}
-                            style ={this.props.styles}
-                            selected_boundaries = {this.props.selected_boundaries}/>)
+                                source={"https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/gwc/service/tms/1.0.0/Flooding:Huc-8" +
+                                    '@EPSG%3A' + 900913 + '@pbf/{z}/{x}/{-y}.pbf'}
+                                zIndex={2}
+                                addBoundary={this.props.addBoundary}
+                                style={this.props.styles}
+                                selected_boundaries={this.props.selected_boundaries}/>)
                         }
                         {(this.props.huc12_boundary) &&
                             (<MVTLayer

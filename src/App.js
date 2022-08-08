@@ -1,4 +1,3 @@
-
 import {Box, Button, Grommet, Heading, List, Main, ResponsiveContext, Tab, Tabs, Text} from 'grommet';
 
 import {Apps, Close, Download, MapLocation} from 'grommet-icons';
@@ -8,9 +7,7 @@ import NavBar from "./Components/Navbars/NavBar";
 import Layers from "./Data/data.json"
 import OlMap from "./Components/Maps/OlMap";
 import BoundryDropdown from "./Components/Dropdowns/boundryDropdown";
-import { saveAs } from 'file-saver';
-
-
+import {saveAs} from 'file-saver';
 
 
 function parseQueryStringToDictionary(queryString) {
@@ -50,16 +47,17 @@ function parseQueryStringToDictionary(queryString) {
 class Hazard extends Component {
   constructor(props) {
     super(props);
-    let z = 4;
+    // let z = 4;
+    // this.query.centroid = [-97.7410, 30.2748]
     this.query = parseQueryStringToDictionary(this.props.location.search)
-    if (this.query.exists) {
-      console.log("exists")
-      this.query.centroid = this.query.centroid.split(",")
-    } else {
-      this.query.centroid = [-97.7410, 30.2748]
-      z = 6;
-    }
-    this.changeBoundary  = this.changeBoundary.bind(this)
+    // if (this.query.exists) {
+    //   console.log("exists")
+    //   this.query.centroid = this.query.centroid.split(",")
+    // } else {
+    //   this.query.centroid = [-97.7410, 30.2748]
+    //   z = 6;
+    // }
+    this.changeBoundary = this.changeBoundary.bind(this)
     this.removeFromList = this.removeFromList.bind(this)
     this.setSideBarState = this.setSideBarState.bind(this)
     this.download = this.download.bind(this)
@@ -75,12 +73,10 @@ class Hazard extends Component {
       damageMapUrl: "",
       layers: Layers,
       index: 0,
-      zoom: z,
-      file_name: [
-
-      ],
-      huc8_boundary:false,
-      huc12_boundary:false,
+      zoom: 4,
+      file_name: [],
+      huc8_boundary: false,
+      huc12_boundary: false,
     };
 
     //References
@@ -144,16 +140,14 @@ class Hazard extends Component {
       }
     };
   };
-  addBoundary(name, url){
 
-
-
+  addBoundary(name, url) {
     let removed = this.removeFromList(name)
-    console.log(removed)
+
     let prev_file_name = this.state.file_name
     if (!removed) prev_file_name.push({name: name, url: url})
 
-    this.setState({file_name:prev_file_name})
+    this.setState({file_name: prev_file_name})
   }
 
   removeFromList(name) {

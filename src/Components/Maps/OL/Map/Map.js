@@ -5,7 +5,7 @@ import * as ol from "ol";
 import axios from "axios";
 
 
-const Map = ({parentProps, children, zoom, center}) => {
+const Map = ({parentProps, changeMap, children,}) => {
     const mapRef = useRef();
 
     const [map, setMap] = useState(null);
@@ -14,7 +14,7 @@ const Map = ({parentProps, children, zoom, center}) => {
     useEffect(() => {
         let options = {
             target: 'map',
-            view: new ol.View({zoom: zoom, center: center}),
+            view: new ol.View({zoom: parentProps.zoom, center: parentProps.center}),
             layers: [],
             controls: [],
             overlays: []
@@ -25,12 +25,23 @@ const Map = ({parentProps, children, zoom, center}) => {
         setMap(mapObject);
         // var status = document.getElementById('status');
         let selected = null;
+        if (mapObject != null) {
+            setTimeout(() => {
+                mapObject.updateSize();
+            }, 300);
 
 
+        }
+        mapObject.on('moveend', () => {
+            console.log()
+            changeMap(mapObject.values_.view.values_)
+        })
         mapObject.on('click', function (e) {
+
             if (e.dragging) {
                 return;
             }
+
             if (selected !== null) {
 
                 selected = null;
@@ -45,7 +56,6 @@ const Map = ({parentProps, children, zoom, center}) => {
                 'STYLES':''})
 
             axios.get(pixel_url).then(response => {
-
                 let layer = parentProps.layers[parentProps.index]
                 const returnValue = response.data.features[0].properties[layer.query_column];
                 let legend = document.getElementById("Legend").children;
@@ -55,42 +65,34 @@ const Map = ({parentProps, children, zoom, center}) => {
                         legend[i].innerHTML = layer.legend[i]['label']
                         legend[i].style.zIndex = 20
                     }
-                    else{
-                        legend[i].classList.replace("LegendIncrease","LegendDecrease")
-                        legend[i].innerHTML =""
+                    else {
+                        legend[i].classList.replace("LegendIncrease", "LegendDecrease")
+                        legend[i].innerHTML = ""
                         legend[i].style.zIndex = 19
                     }
-
                 }
             })
-
         });
 
         return () => mapObject.setTarget(undefined);
 
-    }, [center, parentProps, zoom]);
+    }, [parentProps, changeMap, children,]);
 
 
     // zoom change handler
     useEffect(() => {
         if (!map) return;
 
-        map.getView().setZoom(zoom);
-    }, [map, zoom]);
+        map.getView().setZoom(parentProps.zoom);
+    }, [map, parentProps]);
 
     // center change handler
     useEffect(() => {
         if (!map) return;
 
-        map.getView().setCenter(center)
-    }, [center, map])
-    if (map != null) {
-        setTimeout(() => {
-            map.updateSize();
-        }, 300);
+        map.getView().setCenter(parentProps.center)
+    }, [map, parentProps])
 
-
-    }
 
     // get hover effect
 

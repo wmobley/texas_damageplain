@@ -27,6 +27,7 @@
     "jszip": "latest",
     "file-saver": "latest"
   },
+  "homepage": ".",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
