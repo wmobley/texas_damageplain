@@ -4,6 +4,7 @@ import {Apps, Close, Download, MapLocation} from 'grommet-icons';
 import React, {Component} from "react";
 import AppBar from "../Components/Navbars/AppBar";
 import NavBar from "../Components/Navbars/NavBar";
+import VectorLayers from "../Data/MVTs.json"
 import Layers from "../Data/data.json"
 import OlMap from "../Components/Maps/OlMap";
 import BoundryDropdown from "../Components/Dropdowns/boundryDropdown";
@@ -61,6 +62,7 @@ class Hazard extends Component {
         this.removeFromList = this.removeFromList.bind(this)
         this.setSideBarState = this.setSideBarState.bind(this)
         this.download = this.download.bind(this)
+        this.getLayerNames = this.getLayerNames.bind(this)
         this.setMap = this.setMap.bind(this)
         this.addBoundary = this.addBoundary.bind(this)
         this.state = {
@@ -72,7 +74,7 @@ class Hazard extends Component {
             zoom: z,
             center: fromLonLat(this.query.centroid),
             file_name: [],
-            huc8_boundary: false,
+            boundary_array: [false, false, false, false],
             huc12_boundary: false,
         };
 
@@ -92,8 +94,8 @@ class Hazard extends Component {
         //     "100-Year",
         //     "250-Year",
         //     '500-Year']
-        this.width = this.props.width;
-        this.height = this.props.height;
+        // this.width = this.props.width;
+        // this.height = this.props.height;
         this.LatLng = [30.3000, -95.5000]
 
         //UI Props
@@ -171,27 +173,18 @@ class Hazard extends Component {
         )
         return removed
     }
-    changeBoundary(boundary){
 
-        if (boundary==="Huc-8"){
-            this.setState(({
-                huc8_boundary:true,
-                huc12_boundary:false,
-                })
-            )}
-        else if (boundary === "Huc-12") {
-            this.setState(({
-                    huc8_boundary: false,
-                    huc12_boundary: true,
-                })
-            )
-        } else {
-            this.setState(({
-                    huc8_boundary: false,
-                    huc12_boundary: false,
-                })
-            )
+    changeBoundary(boundary_index) {
+
+        let boundary_array = this.state.boundary_array;
+        for (const [index, element] of boundary_array.entries()) {
+
+            boundary_array[index] = (boundary_index === VectorLayers[index].title)
+
+
         }
+        this.setState({boundary_array: boundary_array})
+
 
     }
 
@@ -234,7 +227,7 @@ class Hazard extends Component {
             fetch(e.url)
                 .then(res => res.blob())
                 .then(blob => {
-                    saveAs(blob, e.name+".tif");
+                    saveAs(blob, e.name + ".tif");
 
                 });
         });
@@ -243,6 +236,15 @@ class Hazard extends Component {
         // }
     }
 
+    getLayerNames(l) {
+
+        let names = [];
+        l.forEach(layer => {
+            names.push(layer.title)
+        })
+
+        return names
+    }
 
 
     render() {
@@ -310,8 +312,10 @@ class Hazard extends Component {
                                                 <Text size={"small"} margin={"small"}>
                                                     Select the Boundary type from which you want to download the file.
                                                 </Text>
-                                                <BoundryDropdown changeBoundary = {this.changeBoundary}/>
-                                                <Button  color={"whoop"} size ={'small'} label={'Clear'} onClick={this.changeBoundary}/>
+                                                <BoundryDropdown OPTIONS={this.getLayerNames(VectorLayers)}
+                                                                 changeBoundary={this.changeBoundary}/>
+                                                <Button color={"whoop"} size={'small'} label={'Clear'}
+                                                        onClick={this.changeBoundary}/>
                                                 <Text size={"small"} margin={"small"}> Click on the location you want to
                                                     download. </Text>
                                                 <Box height={"small"} size={'medium'} overflow={"scroll"}  >
@@ -347,6 +351,7 @@ class Hazard extends Component {
 
                                                parentState={this.state}
                                                layer={this.state.layers}
+                                               vector_layer={VectorLayers}
                                             // height="100%"
                                             // width="inherit"
                                                huc8_boundary={this.state.huc8_boundary}

@@ -8,15 +8,14 @@ import * as tilegrid from "ol/tilegrid";
 import {Fill, Stroke, Style} from "ol/style";
 
 
-const MVTLayer = ({ source,  zIndex = 0 ,style, addBoundary, selected_boundaries}) => {
-	const { map } = useContext(MapContext);
-
+const MVTLayer = ({source, zIndex = 0, style, index, addBoundary, selected_boundaries}) => {
+	const {map} = useContext(MapContext);
 
 
 	useEffect(() => {
 
 		const selection = []
-		selected_boundaries.forEach(boundary=>selection.push(boundary.name))
+		selected_boundaries.forEach(boundary => selection.push(boundary.name))
 		if (!map) return;
 		const boundaryStyle = new Style({
 			stroke: new Stroke({
@@ -70,6 +69,7 @@ const MVTLayer = ({ source,  zIndex = 0 ,style, addBoundary, selected_boundaries
 					selectionLayer.changed();
 					return;
 				}
+				console.log(features)
 				const feature = features[0];
 				if (!feature) {
 					return;
