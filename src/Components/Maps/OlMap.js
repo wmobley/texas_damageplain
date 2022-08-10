@@ -13,7 +13,7 @@ import {Box} from "grommet";
 class OlMap extends React.Component {
     constructor(props) {
         super(props);
-
+        this.list_vector_titles = this.list_vector_titles.bind(this)
         this.setShowLayer2 = this.setShowLayer2.bind(this)
         this.setShowLayer1 = this.setShowLayer1.bind(this)
         this.setRefreshMap = this.setRefreshMap.bind(this)
@@ -40,14 +40,30 @@ class OlMap extends React.Component {
     }
 
 
-
-
     setShowLayer2() {
         this.setState({showLayer2: !this.state.showLayer2})
     }
 
     setShowLayer1() {
         this.setState({showLayer1: !this.state.showLayer1})
+    }
+
+    list_vector_titles(tiles) {
+        let vectors = [];
+        for (const [index, element] of tiles) {
+
+            vectors.push((element) &&
+                (<MVTLayer
+                    key={index}
+                    source={this.props.vector_layer[index]}
+                    zIndex={2}
+
+                    addBoundary={this.props.addBoundary}
+                    style={this.props.styles}
+                    selected_boundaries={this.props.selected_boundaries}/>))
+        }
+
+        return <div>{vectors}</div>;
     }
 
     render() {
@@ -63,22 +79,10 @@ class OlMap extends React.Component {
                         <OLwmts
                             layer={this.props.layer[0]}
                             zIndex={1}/>
-                        {(this.props.huc8_boundary) &&
-                            (<MVTLayer
-                                source={this.props.layer[1]}
-                                zIndex={2}
-                                addBoundary={this.props.addBoundary}
-                                style={this.props.styles}
-                                selected_boundaries={this.props.selected_boundaries}/>)
+                        {
+                            this.list_vector_titles(this.props.parentState.boundary_array.entries())
                         }
-                        {(this.props.huc12_boundary) &&
-                            (<MVTLayer
-                                source={this.props.layer[2]}
-                                zIndex={2}
-                                addBoundary = {this.props.addBoundary}
-                                style ={this.props.styles}
-                                selected_boundaries = {this.props.selected_boundaries}/>)
-                        }
+
 
                     </Layers>
                     <Controls>

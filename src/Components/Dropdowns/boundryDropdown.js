@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import { Select } from 'grommet';
+import React, {Component} from 'react';
+import {Select} from 'grommet';
 
 
-const OPTIONS = ['Huc-8', 'Huc-12']
 class BoundaryDropdown extends Component {
     constructor(props) {
         super(props)
-        this.state = { value: [], options: OPTIONS }
+        this.state = {value: [], options: this.props.OPTIONS}
     }
 
 
@@ -19,7 +18,7 @@ class BoundaryDropdown extends Component {
                     onChange={event => {
                         this.setState({
                             value: event.value,
-                            options: OPTIONS,
+                            options: this.props.OPTIONS,
                         })
                         this.props.changeBoundary(event.value)
                     }
