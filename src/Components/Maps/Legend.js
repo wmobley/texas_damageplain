@@ -30,10 +30,12 @@ class Legend extends Component {
 
     render(){
         const items = []
-        for (const [index, value] of this.props.parentState.layer.legend.entries()) {
+        for (const [index, value] of this.props.parentState.layer[0].legend.entries()) {
             items.push(
-                <Box align={"center"} key={index} fill={"vertical"} pad={"small"} width={"small"}  background={{"color": value.color}}/>
-            )}
+                <Box align={"center"} key={index} fill={"vertical"} pad={"small"} width={"small"}
+                     background={{"color": value.color}}/>
+            )
+        }
         return (
         <Footer margin={'medium'} background="whoop" >
             <Box  direction="row" >

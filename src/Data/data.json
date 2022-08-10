@@ -1,6 +1,6 @@
 [
   {
-    "url": "http://13.90.155.245:8080/geoserver/Flooding/wms",
+    "url": "https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/Flooding/wms",
     "layer": "Flooding:damagePlain Oversampled",
     "title": "Damage Plain Layer",
     "tiled": true,
@@ -31,5 +31,19 @@
         "color": "#00204C"
       }
     ]
+  },
+  {
+    "url": "https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/gwc/service/tms/1.0.0/Flooding:Huc-8@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf",
+    "layer": "Flooding:Huc-8",
+    "title": "HUC-8",
+    "tiled": false,
+    "query_column": "name"
+  },
+  {
+    "url": "https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/gwc/service/tms/1.0.0/Flooding:Huc-12@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf",
+    "layer": "Flooding:Huc-12",
+    "title": "HUC-12",
+    "tiled": false,
+    "query_column": "name"
   }
 ]

@@ -8,8 +8,6 @@ import * as tilegrid from "ol/tilegrid";
 import {Fill, Stroke, Style} from "ol/style";
 
 
-
-
 const MVTLayer = ({ source,  zIndex = 0 ,style, addBoundary, selected_boundaries}) => {
 	const { map } = useContext(MapContext);
 
@@ -46,7 +44,7 @@ const MVTLayer = ({ source,  zIndex = 0 ,style, addBoundary, selected_boundaries
 					tilePixelRatio: 1, // oversampling when > 1
 					tileGrid: tilegrid.createXYZ({maxZoom: 19}),
 					tileSize: 512,
-					url:source,
+					url: source.url,
 					defaultDataProjection: 'EPSG:900913',
 					crossOrigin: 'anonymous'
 				}),
@@ -69,7 +67,6 @@ const MVTLayer = ({ source,  zIndex = 0 ,style, addBoundary, selected_boundaries
 		map.on(['click'], function (event) {
 			vectorLayer.getFeatures(event.pixel).then(function (features) {
 				if (!features.length) {
-
 					selectionLayer.changed();
 					return;
 				}
@@ -77,7 +74,7 @@ const MVTLayer = ({ source,  zIndex = 0 ,style, addBoundary, selected_boundaries
 				if (!feature) {
 					return;
 				}
-				addBoundary(feature.properties_.name, feature.properties_.url)
+				addBoundary(feature.properties_.name, feature.properties_.url, map.getView().values_)
 				selectionLayer.changed();
 			})
 		})

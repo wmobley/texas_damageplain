@@ -1,70 +1,70 @@
-# Getting Started with Create React App
+# TWDB MS² Metadata Tool (Vendor-facing)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the frontend repository for the Texas Damage Plain application. This tool is designed to allow users to
+visualize,
+search and download images of the Damage Plain.
 
-## Available Scripts
+[//]: # (- Production Site &#40;TACC&#41;: https://tdis-web.tacc.utexas.edu/metadata_app)
 
-In the project directory, you can run:
+[//]: # (- Development Site &#40;TACC&#41;:  https://ms2-dev.tacc.utexas.edu/metadata_app)
 
-### `yarn start`
+- Azure Demo Site: https://tdiscorral.z13.web.core.windows.net/texas_damage_plain/index.html
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This is a React-based frontend application, using open layers for the mapping and geoserver to host the WMS and Vector
+Tiles.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Navigating the repository
 
-### `yarn test`
+This repository uses React Router v5 for client-side routing. The main routes component can be found
+in [src/components/Main.js](https://github.com/TexasDIS/ms2-metadata-frontend/blob/main/src/components/Main.js).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The `src` directory is split into the following sub-directories:
 
-### `yarn build`
+- `/components` - all React components
+- `/data` - json files for direction to wms and mvts
+- `/views` - main pages, most edits will be in the Hazards.js
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## API
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+There are three primary spatial APIs this application queries to fetch data, a geoserver WMS Layer to visualize the
+[Damage Plain](https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/Flooding/wms?service=WMS&version=1.1.0&request=GetMap&layers=Flooding%3AdamagePlain%20Oversampled&bbox=-1.196422005872149E7%2C2869375.173692335%2C-1.0370589446057223E7%2C4410483.782851376&width=768&height=742&srs=EPSG%3A3857&styles=&format=application/openlayers)
+.
+Mapbox Vector Tiles (MVTs) are used to supply the download locations for each clipped raster. Currently, two boundaries
+have been generated using Hydrologic Unit
+Codes ([HUC-8](https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/Flooding/wms?service=WMS&version=1.1.0&request=GetMap&layers=Flooding%3AHuc-8&bbox=-1092671.194067343%2C310919.1148527339%2C273823.4742505134%2C1567885.4598421166&width=768&height=706&srs=EPSG%3A5070&styles=&format=application/openlayers)
+and [HUC-12](https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/Flooding/wms?service=WMS&version=1.1.0&request=GetMap&layers=Flooding%3AHuc-12&bbox=-1019492.2564902612%2C266083.1845623863%2C251076.0386061563%2C1527803.064197228&width=768&height=762&srs=EPSG%3A5070&styles=&format=application/openlayers))
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+MVTs and selections can be editin in
+the [MVT.js](https://github.com/TexasDIS/texas_damageplain/blob/main/src/Components/Maps/OL/Layers/MVT.js) file, and the
+WMS
+layer is loaded
+through [OLWMT.js](https://github.com/TexasDIS/texas_damageplain/blob/main/src/Components/Maps/OL/Layers/OLwmts.js).
 
-### `yarn eject`
+## Running the application
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Setup & Installation
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+If this is your first time running the project, run `npm install .` to install all of the necessary dependencies.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Starting the application
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Run `npm start` to start the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it
+in the browser.
 
-## Learn More
+The page will reload if you make edits. You will also see any lint errors in the console.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Builds & Deployment
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Creating development & production builds
 
-### Code Splitting
+Development and production builds can be created with `npm run build:dev` and `npm run build:prod` respectively.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+[//]: # (### Deployment)
 
-### Analyzing the Bundle Size
+[//]: # ()
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+[//]: # (For TACC machine deployment instructions, please)
 
-### Making a Progressive Web App
+[//]: # (view [this walkthrough document]&#40;https://docs.google.com/document/d/1TVq3HNiFu7YhGaWVGhoTy9rFXxHbJ7zBCls32RsN2dw/edit#&#41;.)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[//]: # (You may need to request access to view this document.)
