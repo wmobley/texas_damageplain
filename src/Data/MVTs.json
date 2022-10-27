@@ -1,27 +1,27 @@
 [
   {
-    "url": "https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/gwc/service/tms/1.0.0/Flooding:counties@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf",
+    "url": "https://geoserver-tnrislidar-mma.tacc.utexas.edu/geoserver/gwc/service/tms/1.0.0/Flooding:counties@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf",
     "layer": "Flooding:counties",
     "title": "Counties",
     "tiled": false,
     "query_column": "name"
   },
   {
-    "url": "https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/gwc/service/tms/1.0.0/Flooding:communities@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf",
+    "url": "https://geoserver-tnrislidar-mma.tacc.utexas.edu/geoserver/gwc/service/tms/1.0.0/Flooding:communities@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf",
     "layer": "Flooding:communities",
     "title": "Communities",
     "tiled": false,
     "query_column": "name"
   },
   {
-    "url": "https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/gwc/service/tms/1.0.0/Flooding:Huc-8@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf",
+    "url": "https://geoserver-tnrislidar-mma.tacc.utexas.edu/geoserver/gwc/service/tms/1.0.0/Flooding:Huc-8@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf",
     "layer": "Flooding:Huc-8",
     "title": "HUC-8",
     "tiled": false,
     "query_column": "name"
   },
   {
-    "url": "https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/gwc/service/tms/1.0.0/Flooding:Huc-12@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf",
+    "url": "https://geoserver-tnrislidar-mma.tacc.utexas.edu/geoserver/gwc/service/tms/1.0.0/Flooding:Huc-12@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf",
     "layer": "Flooding:Huc-12",
     "title": "HUC-12",
     "tiled": false,

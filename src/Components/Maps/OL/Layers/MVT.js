@@ -69,7 +69,6 @@ const MVTLayer = ({source, zIndex = 0, style, index, addBoundary, selected_bound
 					selectionLayer.changed();
 					return;
 				}
-				console.log(features)
 				const feature = features[0];
 				if (!feature) {
 					return;

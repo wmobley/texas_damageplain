@@ -37,7 +37,7 @@ class Legend extends Component {
             )
         }
         return (
-        <Footer margin={'medium'} background="whoop" >
+        <Footer margin={'medium'} background="secondary" >
             <Box  direction="row" >
                 <Box id={"status"}></Box>
                 <Box fill={"vertical"} pad={"xsmall"} width={"medium"} />

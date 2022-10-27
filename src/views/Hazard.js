@@ -1,4 +1,4 @@
-import {Box, Button, Grommet, Heading, List, Main, ResponsiveContext, Tab, Tabs, Text} from 'grommet';
+import {Box, Button, Grommet, Heading, Image, List, Main, ResponsiveContext, Tab, Tabs, Text} from 'grommet';
 
 import {Apps, Close, Download, MapLocation} from 'grommet-icons';
 import React, {Component} from "react";
@@ -103,11 +103,11 @@ class Hazard extends Component {
             global: {
                 colors: {
                     onyx: "#1b1c20",
-                    whoop: '#500000',
+                    secondary: '#500000',
                     rain: '#324755',
                     slate: '#6E8CA0',
                     sage: "#87BCBF",
-                    snow: "#FFFFFF",
+                    snow: 'rgb(200, 209, 211)',
                     sunshine: "#FCC931",
                     ice: "#F0F3F4",
                     fossil: "#C8d1d3",
@@ -141,9 +141,7 @@ class Hazard extends Component {
     };
 
     addBoundary(name, url, map_values) {
-
-        console.log(this.state.center)
-
+        // Adds clicked boundary name to download list, updates zoom, and center location to state.
         let removed = this.removeFromList(name)
 
         let prev_file_name = this.state.file_name
@@ -157,7 +155,8 @@ class Hazard extends Component {
     }
 
     removeFromList(name) {
-        console.log(name)
+        // Removes the name from the boundary list.
+        // Returns a true or false
         let newFileName = []
         this.state.file_name.forEach(datum=> {
 
@@ -165,7 +164,6 @@ class Hazard extends Component {
                 newFileName.push(datum)
             }
         });
-        console.log(newFileName, this.state.file_name)
         let removed = newFileName.length < this.state.file_name.length
         this.setState(() => ({
                 file_name: newFileName
@@ -177,6 +175,7 @@ class Hazard extends Component {
     changeBoundary(boundary_index) {
 
         let boundary_array = this.state.boundary_array;
+
         for (const [index, element] of boundary_array.entries()) {
 
             boundary_array[index] = (boundary_index === VectorLayers[index].title)
@@ -252,17 +251,25 @@ class Hazard extends Component {
             <Grommet elevation={"medium"} margin={"small"} theme={this.theme} full={true}>
                 <ResponsiveContext.Consumer>
                     {size => (
-                        <Box elevation={"medium"} margin={"xxsmall"} fill={true}>
-                            <Box background={"ice"}>
-                                <AppBar margin={"small"} background={"whoop"}>
+                        <Box background={'snow'}
+                             elevation={"medium"} margin={"xxsmall"} fill={true}>
+                            <Box >
+                                <AppBar margin={"small"} background={"secondary"}>
+
                                     <Button
                                         icon={<Apps/>}
                                         onClick={() => this.setSideBarState()}/>
-                                    <Heading level='3' margin='small'>Damage Plain</Heading>
+                                    <Box  direction="row" pad={'medium'} width={'medium'} height={"xxsmall"} align={'center'}>
+                                       <Image fit="contain" src={"/img/tdis.png"}/>
+                                        <Heading level='3' margin='small'>Damage Plain</Heading>
+                                    </Box>
+
+
+
                                 </AppBar>
                             </Box>
 
-                            <Main border={{color: "whoop", size:"large"}} elevation={"medium"} margin={"small"}
+                            <Main border={{color: 'secondary', size:"large"}} elevation={"medium"} margin={"small"}
                                   flex direction="row-responsive">
                                 <NavBar showSidebar={this.state.showSidebar}
                                         action={this.setSideBarState}
@@ -314,7 +321,7 @@ class Hazard extends Component {
                                                 </Text>
                                                 <BoundryDropdown OPTIONS={this.getLayerNames(VectorLayers)}
                                                                  changeBoundary={this.changeBoundary}/>
-                                                <Button color={"whoop"} size={'small'} label={'Clear'}
+                                                <Button color={"slate"} size={'small'} label={'Clear'}
                                                         onClick={this.changeBoundary}/>
                                                 <Text size={"small"} margin={"small"}> Click on the location you want to
                                                     download. </Text>

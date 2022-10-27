@@ -1,6 +1,6 @@
 [
   {
-    "url": "https://tdis-geoserver.eastus.cloudapp.azure.com/geoserver/Flooding/wms",
+    "url": "http://geoserver-tnrislidar-mma.tacc.utexas.edu/geoserver/Flooding/wms",
     "layer": "Flooding:damagePlain Oversampled",
     "title": "Damage Plain Layer",
     "tiled": true,
