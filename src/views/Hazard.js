@@ -1,4 +1,4 @@
-import {Box, Button, Grommet, Heading, Image, List, Main, ResponsiveContext, Tab, Tabs, Text} from 'grommet';
+import {Box, Button, Grommet, Heading, Image, List, Main, RangeInput, ResponsiveContext, Tab, Tabs, Text} from 'grommet';
 
 import {Apps, Close, Download, MapLocation} from 'grommet-icons';
 import React, {Component} from "react";
@@ -64,12 +64,14 @@ class Hazard extends Component {
         this.download = this.download.bind(this)
         this.getLayerNames = this.getLayerNames.bind(this)
         this.setMap = this.setMap.bind(this)
+        this.setRasterOpacity = this.setRasterOpacity.bind(this)
         this.addBoundary = this.addBoundary.bind(this)
         this.state = {
             showSidebar: false,
             showMapNavigation: false,
             damageMapUrl: "",
-            layers: Layers,
+            layers: Layers,   
+            rasterOpacity: 1,
             index: 0,
             zoom: z,
             center: fromLonLat(this.query.centroid),
@@ -200,6 +202,17 @@ class Hazard extends Component {
         }
     }
 
+    setRasterOpacity(rangeInput) {
+
+        this.setState({
+            rasterOpacity: rangeInput/10,
+            // boundary_array: [true,false,false,false]
+        })
+
+
+        console.log(this.state.rasterOpacity)
+    }
+
 
     setSideBarState() {
 
@@ -315,7 +328,15 @@ class Hazard extends Component {
                                         <Tab title="Download">
                                             <Box fill pad="medium" gap={"medium"} align="center">
                                                 <Download size="xlarge" color={'onyx'}/>
-                                                <Heading level={3} margin={"small"}>Download</Heading>
+                                                <Heading level={3} margin={"small"}>Download</Heading>                      
+                                                
+                                                <Text size={"medium"} margin={"small"}>Opacity of Damage Plain Layer</Text>   
+                                                <RangeInput size={"medium"} margin={"small"} 
+                                                    min={0} 
+                                                    max={10}
+                                                    value = {this.state.rasterOpacity * 10}
+                                                    onChange={(e)=> this.setRasterOpacity(e.target.value) } />   
+
                                                 <Text size={"small"} margin={"small"}>
                                                     Select the Boundary type from which you want to download the file.
                                                 </Text>

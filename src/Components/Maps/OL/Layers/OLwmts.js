@@ -5,7 +5,7 @@ import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
 
 
-const OLwmts = ({ layer, zIndex = 0 }) => {
+const OLwmts = ({ layer, zIndex = 0, opacity = 1 }) => {
 
 	const { map } = useContext(MapContext);
 
@@ -26,13 +26,14 @@ const OLwmts = ({ layer, zIndex = 0 }) => {
 
 		map.addLayer(tileLayer);
 		tileLayer.setZIndex(zIndex);
+		tileLayer.setOpacity(opacity);
 
 		return () => {
 			if (map) {
 				map.removeLayer(tileLayer);
 			}
 		};
-	}, [layer, zIndex, map]);
+	}, [layer, zIndex, map, opacity]);
 
 	return null;
 };
