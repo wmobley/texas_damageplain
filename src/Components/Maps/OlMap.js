@@ -78,6 +78,7 @@ class OlMap extends React.Component {
                             zIndex={0}/>
                         <OLwmts
                             layer={this.props.layer[0]}
+                            opacity = {this.props.parentState.rasterOpacity}
                             zIndex={1}/>
                         {
                             this.list_vector_titles(this.props.parentState.boundary_array.entries())
